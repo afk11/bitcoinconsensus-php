@@ -30,12 +30,10 @@ if test "$PHP_BITCOINCONSENSUS" != "no"; then
     AC_MSG_ERROR([Please reinstall the bitcoinconsensus distribution])
   fi
 
-  dnl # --with-bitcoinconsensus -> add include path
   PHP_ADD_INCLUDE($BITCOINCONSENSUS_DIR/include)
 
-  dnl # --with-bitcoinconsensus -> check for lib and symbol presence
-  LIBNAME=bitcoinconsensus # you may want to change this
-  LIBSYMBOL=bitcoinconsensus_version # you most likely want to change this
+  LIBNAME=bitcoinconsensus
+  LIBSYMBOL=bitcoinconsensus_verify_script_with_amount
 
   PHP_CHECK_LIBRARY($LIBNAME,$LIBSYMBOL,
   [

@@ -18,7 +18,8 @@ class BitcoinConsensusTest extends \PHPUnit_Framework_TestCase
         return $results;
     }
 
-    private function loadVectors($dir) {
+    private function loadVectors($dir)
+    {
         $vectors = array();
         foreach ($this->loadExternalTestFiles($dir) as $c => $file) {
             $vectors[] = array_merge(array($dir, $c), explode("\n", file_get_contents($file)));
@@ -40,26 +41,37 @@ class BitcoinConsensusTest extends \PHPUnit_Framework_TestCase
     {
         return array_merge($this->getPositiveTests(), $this->getNegativeTests());
     }
+
     public function testVersion()
     {
-        $this->assertEquals(0, bitcoinconsensus_version());
+        $this->assertEquals(1, \bitcoinconsensus_version());
+    }
+
+    public function getNew()
+    {
+        $array = json_decode(file_get_contents("tests/data/vectors.json"), true);
+
+        return $array;
     }
 
     /**
-     * @dataProvider getAllTests
+     * @dataProvider getNew
      */
-    public function testValid($dir, $c, $scriptHex, $txHex, $nInput, $flags, $eResult)
+    public function testSimple($txHex, $scriptPubKeyHex, $eResult, $flags)
     {
-        $script = pack("H*", $scriptHex);
+        $script = pack("H*", $scriptPubKeyHex);
         $tx = pack("H*", $txHex);
 
         $error = 0;
-        $result = bitcoinconsensus_verify_script($script, $tx, $nInput, $flags, $error);
-        $this->assertEquals($eResult, $result, $dir . "/" . $c);
+        $result = \bitcoinconsensus_verify_script($script, $tx, 0, $flags, $error);
+
+
+        $this->assertEquals($eResult, $result);
 
         // since the script returns true, the error can never be zero.
         if ($eResult == 1) {
             $this->assertEquals(0, $error);
         }
     }
+
 }
