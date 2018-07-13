@@ -74,7 +74,7 @@ class BitcoinConsensusTest extends \PHPUnit_Framework_TestCase
                 $results[] = array(
                     $vector['scriptPubKey'], (int) $vector['amount'], $vector['tx'], $vector['nIn'], $vector['flags'], $vector['result'], $vector
                 );
-            }
+            }``
         }
 
         return $results;
